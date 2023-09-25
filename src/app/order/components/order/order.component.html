@@ -6,7 +6,7 @@
         <div class="row" *ngFor="let product of products">
           <div class="col-xs-12 col-sm-2 col-md-2">
             <div class="box">
-              <img class="image" [src]="product.image" alt="">
+              <img class="image" [src]="product.images[0]" alt="">
             </div>
           </div>
           <div class="col-xs-12 col-sm-5 col-md-5">
@@ -21,7 +21,7 @@
           </div>
         </div>
     </div>
-    
+
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Datos personales</ng-template>
