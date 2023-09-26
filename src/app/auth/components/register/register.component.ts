@@ -37,6 +37,7 @@ export class RegisterComponent implements OnInit {
   }
 
   private buildForm() {
+    // DEFINING FORM DATA AND VALIDATIONS
     this.form = this.formBuilder.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6), MyValidators.validPassword]],
@@ -44,9 +45,11 @@ export class RegisterComponent implements OnInit {
       type: ['company', [Validators.required]],
       companyName: ['', [Validators.required]],
     }, {
+      // HERE ARE THE GROUP VALIDATIONS
       validators: MyValidators.matchPasswords
     });
 
+    // REACTIVLY CHANGE THE companyName VALIDATIOn
     this.type.valueChanges
     .subscribe(value => {
       console.log(value);
