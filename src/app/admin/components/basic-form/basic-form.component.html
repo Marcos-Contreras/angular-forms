@@ -1,28 +1,41 @@
 <form [formGroup]="form" (ngSubmit)="save()">
-  <p>
-    NAME: {{ name.value }} {{ name.valid }}
-    <input
-      [class.is-valid]="isNameFieldValid"
-      [class.is-invalid]="isNameFieldInvalid"
-      type="text"
-      formControlName="name">
-    <!-- <code>
-      <pre>
-        {{ name | json }}
-      </pre>
-    </code> -->
-    <button [disabled]="name.invalid" (click)="getNameValue()">Get value</button>
-  </p>
-  <div class="messages" [class.active]="isNameFieldInvalid">
+  <div formGroupName="fullName">
+    <mat-form-field appearance="fill">
+      <mat-label>NAME: {{ name.value }} {{ name.valid }}</mat-label>
+      <input matInput type="text" formControlName="name">
+    </mat-form-field>
+
+    <div class="messages" [class.active]="isNameFieldInvalid">
+      <mat-error *ngIf="name.hasError('required')">
+        This field is required
+      </mat-error>
+      <mat-error *ngIf="name.hasError('maxlength')">
+        This field must have 10 characters max
+      </mat-error>
+      <mat-error *ngIf="name.hasError('pattern')">
+        Not a valid name (no special characters)
+      </mat-error>
+    </div>
+
     <p>
-      <strong *ngIf="name.hasError('required')">This field is required</strong>
+      LAST: {{ last.value }} {{ last.valid }}
+      <input
+        [class.is-valid]="isLastFieldValid"
+        [class.is-invalid]="isLastFieldInvalid"
+        type="text"
+        formControlName="last">
     </p>
-    <p>
-      <strong *ngIf="name.hasError('maxlength')">This field must have 10 characters max</strong>
-    </p>
-    <p>
-      <strong *ngIf="name.hasError('pattern')">Not a valid name (no special characters)</strong>
-    </p>
+    <div class="messages" [class.active]="isLastFieldInvalid">
+      <p>
+        <strong *ngIf="last.hasError('required')">This field is required</strong>
+      </p>
+      <p>
+        <strong *ngIf="last.hasError('maxlength')">This field must have 10 characters max</strong>
+      </p>
+      <p>
+        <strong *ngIf="last.hasError('pattern')">Not a valid last name (no special characters)</strong>
+      </p>
+    </div>
   </div>
 
   <p>

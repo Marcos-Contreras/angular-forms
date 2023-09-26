@@ -34,10 +34,14 @@ export class BasicFormComponent implements OnInit {
   buildForm() {
     // EVERY FIELD HAS THREE PARAMETERS: INITAL VALUE, SYNC AND ASYNC FUNCTIONS
     this.form = this.formBuilder.group({
-      name: [
-        '',
-        [Validators.required, Validators.maxLength(10), Validators.pattern(/^[a-zA-Z]+$/)]
-      ],
+      // name: [
+      //   '',
+      //   [Validators.required, Validators.maxLength(10), Validators.pattern(/^[a-zA-Z]+$/)]
+      // ],
+      fullName: this.formBuilder.group({
+        name: ['', [Validators.required, Validators.maxLength(10), Validators.pattern(/^[a-zA-Z]+$/)]],
+        last: ['', [Validators.required, Validators.maxLength(10), Validators.pattern(/^[a-zA-Z]+$/)]],
+      }),
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       date: [''],
@@ -74,10 +78,16 @@ export class BasicFormComponent implements OnInit {
 
   // GETTERS
   get isNameFieldValid() {
-    return this.form.get('name').touched && this.form.get('name').valid;
+    return this.form.get('fullName.name').touched && this.form.get('fullName.name').valid;
   }
   get isNameFieldInvalid() {
-    return this.form.get('name').touched && this.form.get('name').invalid;
+    return this.form.get('fullName.name').touched && this.form.get('fullName.name').invalid;
+  }
+  get isLastFieldValid() {
+    return this.form.get('fullName.last').touched && this.form.get('fullName.last').valid;
+  }
+  get isLastFieldInvalid() {
+    return this.form.get('fullName.last').touched && this.form.get('fullName.last').invalid;
   }
   get isPhoneFieldValid() {
     return this.form.get('phone').touched && this.form.get('phone').valid;
@@ -98,7 +108,10 @@ export class BasicFormComponent implements OnInit {
     return this.form.get('age').touched && this.form.get('age').invalid;
   }
   get name() {
-    return this.form.get('name');
+    return this.form.get('fullName.name');
+  }
+  get last() {
+    return this.form.get('fullName.last');
   }
   get email() {
     return this.form.get('email');
