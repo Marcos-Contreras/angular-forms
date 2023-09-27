@@ -56,7 +56,8 @@ export class ProductCreateComponent implements OnInit {
         this.image$ = fileRef.getDownloadURL();
         this.image$.subscribe(url => {
           console.log(url);
-          this.form.get('image').setValue(url);
+          const fileList = this.images.value as string[];
+          this.form.get('images').setValue([...fileList, url]);
         });
       })
     )
@@ -65,16 +66,27 @@ export class ProductCreateComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      id: ['', [Validators.required]],
-      title: ['', [Validators.required]],
+      title: ['', [Validators.required, Validators.minLength(4)]],
       price: ['', [Validators.required, MyValidators.isPriceValid]],
-      image: [''],
-      description: ['', [Validators.required]],
+      images: [Array<string>(), [Validators.required]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      categoryId: ['', [Validators.required]]
     });
   }
 
-  get priceField() {
+  get price() {
     return this.form.get('price');
   }
-
+  get title() {
+    return this.form.get('title');
+  }
+  get images() {
+    return this.form.get('images');
+  }
+  get description() {
+    return this.form.get('description');
+  }
+  get categoryId() {
+    return this.form.get('categoryId');
+  }
 }

@@ -3,6 +3,7 @@
     <mat-card-title>{{ product.name | uppercase }}</mat-card-title>
     <mat-card-subtitle>{{ product.price | currency }}</mat-card-subtitle>
   </mat-card-header>
+  {{product}}
   <div class="crop-image">
     <img [src]="product.images[0]" alt="">
   </div>
