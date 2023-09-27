@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+// THIS IS A DUMB COMPONENT
+
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 
-import { CategoriesService } from './../../../../core/services/categories.service';
 import { MyValidators } from './../../../../utils/validators';
+import { Category } from './../../../../core/models/category.model';
+import { CategoriesService } from '../../../../core/services/categories.service';
 
 @Component({
   selector: 'app-category-form',
@@ -15,26 +17,27 @@ import { MyValidators } from './../../../../utils/validators';
 export class CategoryFormComponent implements OnInit {
 
   form: FormGroup;
-  categoryId: string;
+  isNew: boolean = true;
+  // categoryId: string;
+
+  @Input()
+  set category(data: Category) {
+    if(data) {
+      this.isNew = false;
+      this.form.patchValue(data);
+    }
+  }
+  @Output() create = new EventEmitter();
+  @Output() update = new EventEmitter();
 
   constructor(
     private formBuilder: FormBuilder,
-    private categoriesService: CategoriesService,
-    private router: Router,
     private storage: AngularFireStorage,
-    private route: ActivatedRoute
   ) {
     this.buildForm();
   }
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
-      this.categoryId = params.id;
-      if(this.categoryId) {
-        this.getCategory();
-      }
-    });
-  }
+  ngOnInit(): void {}
 
   private buildForm() {
     this.form = this.formBuilder.group({
@@ -56,45 +59,14 @@ export class CategoryFormComponent implements OnInit {
     console.log(this.form);
 
     if(this.form.valid) {
-      if(this.categoryId) {
-        this.updateCategory();
+      if(this.isNew) {
+        this.create.emit(this.form.value);
       } else {
-        this.createCategory();
+        this.update.emit(this.form.value);
       }
     } else {
       this.form.markAllAsTouched();
     }
-  }
-
-  private createCategory() {
-    const data = this.form.value;
-    this.categoriesService.createCategory(data)
-    .subscribe(response => {
-      console.log(response);
-      this.router.navigate(['./admin/categories']);
-    });
-  }
-
-  private updateCategory() {
-    const data = this.form.value;
-    this.categoriesService.updateCategory(this.categoryId, data)
-    .subscribe(response => {
-      console.log(response);
-      this.router.navigate(['./admin/categories']);
-    });
-  }
-
-  private getCategory() {
-    console.log('aaaa');
-
-    this.categoriesService.getCategory(this.categoryId)
-    .subscribe(response => {
-      console.log(response);
-      // ASSIGN THE DATA TO THE FORM OBJECT WHERE THE KEYS MATCH
-      this.form.patchValue(response);
-      // ANOTHER OPTION TO ASSIGN A VALUE FROM RESPONSE DATA
-      this.name.setValue(response.name);
-    });
   }
 
   uploadFile(event) {
