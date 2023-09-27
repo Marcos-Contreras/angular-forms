@@ -58,7 +58,12 @@
       <div class="row">
         <div class="col-xs">
           <mat-form-field>
-            <textarea placeholder="Category" formControlName="categoryId" matInput></textarea>
+            <mat-label>Categories</mat-label>
+            <mat-select formControlName="categoryId">
+              <mat-option *ngFor="let category of categoriesOptions" [value]="category.id">
+                {{ category.name }}
+              </mat-option>
+            </mat-select>
             <div class="messages" *ngIf="categoryId.touched && categoryId.invalid">
               <mat-error *ngIf="categoryId.hasError('required')">
                 Category is required

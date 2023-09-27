@@ -7,8 +7,11 @@ import { finalize } from 'rxjs/operators';
 
 import { MyValidators } from './../../../../utils/validators';
 import { ProductsService } from './../../../../core/services/products/products.service';
+import { CategoriesService } from './../../../../core/services/categories.service';
 
 import { Observable } from 'rxjs';
+import { Category } from '../../../../core/models/category.model';
+import { getLocaleCurrencyCode } from '@angular/common';
 
 @Component({
   selector: 'app-product-create',
@@ -19,20 +22,25 @@ export class ProductCreateComponent implements OnInit {
 
   form: FormGroup;
   image$: Observable<any>;
+  categoriesOptions: Category[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private productsService: ProductsService,
     private router: Router,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private categoriesService: CategoriesService
   ) {
     this.buildForm();
   }
 
   ngOnInit() {
+    this.getCategories();
   }
 
   saveProduct(event: Event) {
+    console.log(this.form.value);
+
     event.preventDefault();
     if (this.form.valid) {
       const product = this.form.value;
@@ -71,6 +79,13 @@ export class ProductCreateComponent implements OnInit {
       images: [Array<string>(), [Validators.required]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       categoryId: ['', [Validators.required]]
+    });
+  }
+
+  private getCategories() {
+    this.categoriesService.getAllCategories()
+    .subscribe(response => {
+      this.categoriesOptions = response;
     });
   }
 
