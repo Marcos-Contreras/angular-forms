@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 
 import { CategoriesService } from './../../../../core/services/categories.service';
+import { MyValidators } from './../../../../utils/validators';
 
 @Component({
   selector: 'app-category-form',
@@ -14,22 +15,32 @@ import { CategoriesService } from './../../../../core/services/categories.servic
 export class CategoryFormComponent implements OnInit {
 
   form: FormGroup;
+  categoryId: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private categoriesService: CategoriesService,
     private router: Router,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private route: ActivatedRoute
   ) {
     this.buildForm();
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe((params: Params) => {
+      this.categoryId = params.id;
+      if(this.categoryId) {
+        this.getCategory();
+      }
+    });
   }
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(4)],
+      // MyValidators.validateCategory(this.categoriesService)
+    ],
       image: ['', [Validators.required]]
     });
   }
@@ -42,8 +53,14 @@ export class CategoryFormComponent implements OnInit {
   }
 
   save() {
+    console.log(this.form);
+
     if(this.form.valid) {
-      this.createCategory();
+      if(this.categoryId) {
+        this.updateCategory();
+      } else {
+        this.createCategory();
+      }
     } else {
       this.form.markAllAsTouched();
     }
@@ -55,6 +72,28 @@ export class CategoryFormComponent implements OnInit {
     .subscribe(response => {
       console.log(response);
       this.router.navigate(['./admin/categories']);
+    });
+  }
+
+  private updateCategory() {
+    const data = this.form.value;
+    this.categoriesService.updateCategory(this.categoryId, data)
+    .subscribe(response => {
+      console.log(response);
+      this.router.navigate(['./admin/categories']);
+    });
+  }
+
+  private getCategory() {
+    console.log('aaaa');
+
+    this.categoriesService.getCategory(this.categoryId)
+    .subscribe(response => {
+      console.log(response);
+      // ASSIGN THE DATA TO THE FORM OBJECT WHERE THE KEYS MATCH
+      this.form.patchValue(response);
+      // ANOTHER OPTION TO ASSIGN A VALUE FROM RESPONSE DATA
+      this.name.setValue(response.name);
     });
   }
 

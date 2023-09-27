@@ -13,13 +13,19 @@
               <mat-error *ngIf="name.hasError('required')">
                 Name is required
               </mat-error>
+              <mat-error *ngIf="name.hasError('minLength')">
+                Name requires more than 3 characters
+              </mat-error>
+              <mat-error *ngIf="name.hasError('not_available')">
+                Name is already in use
+              </mat-error>
             </div>
           </mat-form-field>
         </div>
       </div>
       <div class="row">
         <div class="col-xs">
-          <img *ngIf="image.value" [src]="image.value" />
+          <img *ngIf="image.value" [src]="image.value" width="200px" />
           <input (change)="uploadFile($event)" type="file" placeholder="image">
           <div class="messages" *ngIf="image.touched && image.invalid">
             <mat-error *ngIf="image.hasError('required')">
@@ -30,7 +36,9 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button type="submit">Save Category</button>
+      <button mat-raised-button type="submit">
+        {{ categoryId ? 'Update category' : 'Save category' }}
+      </button>
     </mat-card-actions>
   </mat-card>
 </form>
