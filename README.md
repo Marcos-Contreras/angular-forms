@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.11.
 Simple project developed based on the Platzi's Angular Forms course.
-URL to the project in Firebase Hosting: https://angular-forms-cd71c.web.app
+<br/>URL to the project in Firebase Hosting: https://angular-forms-cd71c.web.app
 
 ## Development server
 
