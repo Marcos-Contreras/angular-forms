@@ -4,6 +4,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 Simple project developed based on the Platzi's Angular Forms course. Initial version forked from Platzi's repository.
 </br>URL to the project in Firebase Hosting: https://angular-forms-cd71c.web.app
 
+# Access to admin module
+URL to the admin module: https://angular-forms-cd71c.web.app/admin
+Credentials:
+email: nicolas@nicolas.com
+password: nicolas.2010
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
