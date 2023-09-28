@@ -6,7 +6,7 @@ Simple project developed based on the Platzi's Angular Forms course. Initial ver
 
 # Access to admin module
 URL to the admin module: https://angular-forms-cd71c.web.app/admin
-Credentials:
+</br>Credentials:
 email: nicolas@nicolas.com
 password: nicolas.2010
 
