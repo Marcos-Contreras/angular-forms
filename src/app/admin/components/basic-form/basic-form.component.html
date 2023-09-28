@@ -1,0 +1,153 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div formGroupName="fullName">
+    <mat-form-field appearance="fill">
+      <mat-label>NAME: {{ name.value }} {{ name.valid }}</mat-label>
+      <input matInput type="text" formControlName="name">
+    </mat-form-field>
+
+    <div class="messages" [class.active]="isNameFieldInvalid">
+      <mat-error *ngIf="name.hasError('required')">
+        This field is required
+      </mat-error>
+      <mat-error *ngIf="name.hasError('maxlength')">
+        This field must have 10 characters max
+      </mat-error>
+      <mat-error *ngIf="name.hasError('pattern')">
+        Not a valid name (no special characters)
+      </mat-error>
+    </div>
+
+    <p>
+      LAST: {{ last.value }} {{ last.valid }}
+      <input
+        [class.is-valid]="isLastFieldValid"
+        [class.is-invalid]="isLastFieldInvalid"
+        type="text"
+        formControlName="last">
+    </p>
+    <div class="messages" [class.active]="isLastFieldInvalid">
+      <p>
+        <strong *ngIf="last.hasError('required')">This field is required</strong>
+      </p>
+      <p>
+        <strong *ngIf="last.hasError('maxlength')">This field must have 10 characters max</strong>
+      </p>
+      <p>
+        <strong *ngIf="last.hasError('pattern')">Not a valid last name (no special characters)</strong>
+      </p>
+    </div>
+  </div>
+
+  <p>
+    EMAIL: {{ email.value }}
+    <input
+      [class.is-valid]="isEmailFieldValid"
+      [class.is-invalid]="isEmailFieldInvalid"
+      type="email" [formControl]="email">
+  </p>
+  <div class="messages" [class.active]="isEmailFieldInvalid">
+    <p>
+      <strong *ngIf="email.hasError('required')">Email is required</strong>
+    </p>
+    <p>
+      <strong *ngIf="email.hasError('email')">Value must be an email</strong>
+    </p>
+  </div>
+
+  <p>
+    COLOR: {{ color.value }}
+    <input type="color" [formControl]="color">
+  </p>
+
+  <p>
+    PHONE: {{ phone.value }}
+    <input
+    [class.is-valid]="isPhoneFieldValid"
+    [class.is-invalid]="isPhoneFieldInvalid"
+    type="phone" [formControl]="phone">
+  </p>
+  <div class="messages" [class.active]="isPhoneFieldInvalid">
+    <p>
+      <strong *ngIf="phone.touched && phone.hasError('required')">Phone is required</strong>
+    </p>
+  </div>
+
+  <p>
+    DATE: {{ date.value }}
+    <input type="date" [formControl]="date">
+  </p>
+
+  <p>
+    AGE: {{ age.value }}
+    <input
+    [class.is-valid]="isAgeFieldValid"
+    [class.is-invalid]="isAgeFieldInvalid"
+    type="number" [formControl]="age">
+  </p>
+  <div class="messages" [class.active]="isAgeFieldInvalid">
+    <p>
+      <strong *ngIf="age.hasError('required')">Age is required</strong>
+    </p>
+    <p>
+      <strong *ngIf="age.hasError('min')">Age must be greater than 18</strong>
+    </p>
+    <p>
+      <strong *ngIf="age.hasError('max')">Age must be less tan 100</strong>
+    </p>
+  </div>
+
+  <p>
+    CATEGORY: {{ category.value }}
+    <select [formControl]="category">
+      <option value="category-1">Category 1</option>
+      <option value="category-2">Category 2</option>
+      <option value="category-3">Category 3</option>
+      <option value="category-4">Category 4</option>
+    </select>
+  </p>
+  <p>
+    TAGS: {{ tags.value }}
+    <select [formControl]="tags" multiple>
+      <option value="tag-1">Tag 1</option>
+      <option value="tag-2">Tag 2</option>
+      <option value="tag-3">Tag 3</option>
+      <option value="tag-4">Tag 4</option>
+    </select>
+  </p>
+
+  <p>
+    AGREE: {{ agree.value }}
+    <input type="checkbox" [formControl]="agree">
+  </p>
+  <p>
+    GENDER: {{ gender.value }}
+    <label>
+      <input name="gender" type="radio" value="male" [formControl]="gender" />
+      Male
+    </label>
+    <label>
+      <input name="gender" type="radio" value="female" [formControl]="gender" />
+      Female
+    </label>
+    <label>
+      <input name="gender" type="radio" value="other" [formControl]="gender" />
+        Other
+    </label>
+  </p>
+  <p>
+    ZONE: {{ zone.value }}
+    <label>
+      <input name="zone" type="radio" value="zone-1" [formControl]="zone" />
+      Zona 1
+    </label>
+    <label>
+      <input name="zone" type="radio" value="zone-2" [formControl]="zone" />
+      Zona 2
+    </label>
+    <label>
+      <input name="zone" type="radio" value="zone-3" [formControl]="zone" />
+        Zona 3
+    </label>
+  </p>
+  <button type="submit">SEND</button>
+</form>
